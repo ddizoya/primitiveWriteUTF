@@ -32,11 +32,10 @@ public class PrimitivosUTF {
             dis = new DataInputStream(new BufferedInputStream(new FileInputStream(fichero)));
             dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fichero)));
 
-            dos.writeUTF(str);
+            dos.writeUTF(str); //Sin esto, no se vuelca el contenido del buffer al fichero.
             dos.flush();
             /**
-             * Con available guardamos la cantidad disponible a leerse por dis,
-             * y que por tanto ocupa la linea escrita.
+             * Con .available() guardamos la cantidad disponible para leer.
              */
 
             cantidad = dis.available();
@@ -55,7 +54,7 @@ public class PrimitivosUTF {
              * Necesitamos reiniciar el streaming, porque ya lo hemos
              * recorrido de inicio a fin, y no podemos volver al principio.
              * Reabriendo el streaming volveremos a tener los 40 bytes disponibles
-             * para volver aser recorridos linea a linea con readUTF.
+             * para volver a ser recorridos linea a linea con readUTF.
              */
             this.reiniciarDIS();
 
