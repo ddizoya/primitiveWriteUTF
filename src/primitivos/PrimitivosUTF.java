@@ -31,27 +31,62 @@ public class PrimitivosUTF {
         try {
             dis = new DataInputStream(new BufferedInputStream(new FileInputStream(fichero)));
             dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fichero)));
-        
+
             dos.writeUTF(str);
             dos.flush();
-            //Con available guardamos la cantidad disponible a leerse por dis, y que
-            //por tanto ocupa la linea escrita.
-            cantidad = dis.available(); 
+            /**
+             * Con available guardamos la cantidad disponible a leerse por dis,
+             * y que por tanto ocupa la linea escrita.
+             */
+
+            cantidad = dis.available();
             System.out.println("writeUTF ha escrito: " + dis.readUTF());
             System.out.println("Cantidad escrita: " + cantidad + " bytes.\n\n");
-            
-    
+
             dos.writeUTF(str);
             dos.flush();
             cantidad = dis.available(); //Sobreescribimos la cantidad que vamos a leer y que ocupa la linea.
             System.out.println("writeUTF ha escrito: " + dis.readUTF());
             System.out.println("Cantidad escrita: " + cantidad + " bytes.\n\n");
-         
-            System.out.println("Bytes totales escritos: " + dos.size()); //Size nos da el tamaño TOTAL de las dos lineas leidas.
-            
-            
-       
 
+            System.out.println("Bytes totales escritos: " + dos.size() + "\n"); //Size nos da el tamaño TOTAL de las dos lineas leidas.
+
+            /**
+             * Necesitamos cerrar el streaming y releer, porque solo permite una
+             * lectura de inicio a fin, y no la podemos recorrer. Por tanto,
+             * debemos hacer lecturas individuales de punto a punto. Para ello,
+             * necesitamos un metodo que cierre el streaming, y lo vuelta a
+             * abrir.
+             */
+            this.reiniciarDIS();
+
+           
+
+            /**
+             * Beve explicacion:
+             *
+             * Total: 40 bytes. Leido: una vez hecho el primer readUTF va a leer
+             * 20 byes. Restante: diferencia entre total disponible (40) entre
+             * los leidos (20)
+             */
+            
+            int total, leido, restante;
+            
+            System.out.println("******************************");
+            total = dis.available();
+            System.out.println("Comprobacion de todos los bytes por leer --> " + total + "\n");
+            System.out.println("******************************");
+            System.out.println("Primera linea leida en UTF: " + dis.readUTF());
+            leido = dis.available();
+            restante = total - leido;
+            System.out.println("Cantidad de bytes leidos: " + leido);
+            System.out.println("Segunda linea leida en UTF: " + dis.readUTF());
+            System.out.println("Cantidad de bytes restantes: " + restante);
+
+            System.out.println("******************************");
+            System.out.println("\n Comprobacion de que se ha leido todo: Bytes restantes --> " + dis.available());
+            System.out.println("******************************");
+            
             //System.out.println("writeUTF ha escrito: "+ textoL);
         } catch (FileNotFoundException ex) {
             System.out.println("Error en el streaming de entrada.");
@@ -64,18 +99,25 @@ public class PrimitivosUTF {
 
     }
 
-    
-    
+    public void reiniciarDIS() {
+        try {
+            dis.close();
+            dis = new DataInputStream(new BufferedInputStream(new FileInputStream(fichero)));
+        } catch (IOException ex) {
+            System.err.println("Error en el reinicio del DataInputStream.");
+        }
+
+    }
 
     public static void main(String[] args) {
         try {
             PrimitivosUTF obj = new PrimitivosUTF();
             obj.proceder("Esto es una cadena");
-            
+
         } catch (IOException ex) {
             System.err.println("Error en el main.");
         }
-        
+
     }
 
 }
