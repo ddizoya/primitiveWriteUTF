@@ -89,9 +89,9 @@ public class PrimitivosUTF {
             
             //System.out.println("writeUTF ha escrito: "+ textoL);
         } catch (FileNotFoundException ex) {
-            System.out.println("Error en el streaming de entrada.");
+            System.err.println("Error encontrando el archivo.");
         } catch (IOException ex) {
-            Logger.getLogger(PrimitivosUTF.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error de I/O.");
         } finally {
             dis.close();
             dos.close();
