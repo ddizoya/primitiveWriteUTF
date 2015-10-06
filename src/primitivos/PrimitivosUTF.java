@@ -52,11 +52,10 @@ public class PrimitivosUTF {
             System.out.println("Bytes totales escritos: " + dos.size() + "\n"); //Size nos da el tamaño TOTAL de las dos lineas leidas.
 
             /**
-             * Necesitamos cerrar el streaming y releer, porque solo permite una
-             * lectura de inicio a fin, y no la podemos recorrer. Por tanto,
-             * debemos hacer lecturas individuales de punto a punto. Para ello,
-             * necesitamos un metodo que cierre el streaming, y lo vuelta a
-             * abrir.
+             * Necesitamos reiniciar el streaming, porque ya lo hemos
+             * recorrido de inicio a fin, y no podemos volver al principio.
+             * Reabriendo el streaming volveremos a tener los 40 bytes disponibles
+             * para volver aser recorridos linea a linea con readUTF.
              */
             this.reiniciarDIS();
 
